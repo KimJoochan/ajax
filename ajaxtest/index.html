@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <h1><a href="#!welcome">WEB</a></h1>
+    <input type="button" id="night_day" value="night" onclick="nightDayHandler(this);">
+    <ul id="nav">
+
+    </ul>
+    <article></article>
+    <script type="text/javascript">
+      function fetchPage(name){
+        fetch(name).then(function(response){
+          response.text().then(function(text){
+            document.querySelector('article').innerHTML=text;
+          })
+        });
+      }
+      if(location.hash){
+        fetchPage(location.hash.substr(2))
+      }else{
+        fetchPage('welcome');
+      }
+      fetch('list').then(function(response){
+        response.text().then(function(text){
+        let itmes=text.split(',');
+        var i=0;
+        let tags='';
+        while (i<itmes.length) {
+          var item=itmes[i].trim();
+          console.log(item);
+          var tag=`<li><a href="#!${item}" onclick="fetchPage('${item}')">${item}</a></li>`;
+          tags+=tag;
+          i++;
+        };
+        document.querySelector('#nav').innerHTML=tags;
+      })
+      });
+    </script>
+  </body>
+</html>
